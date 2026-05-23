@@ -1,0 +1,2 @@
+# Victor Omni — Minimal Sovereign Dependencies
+python>=3.10
