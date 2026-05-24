@@ -13,6 +13,7 @@ from quantum.quantum_linear import QuantumLinear
 from core.canon_gate import CanonGate
 from core.emergence_monitor import EmergenceMonitor
 from genome.bloodline import load_bloodline
+from pantheon.pantheon_gods import integrate_pantheon
 
 PHI = (1 + math.sqrt(5)) / 2
 
@@ -32,7 +33,7 @@ class VictorFESCore:
 
     def perceive(self, stimulus: str) -> Dict[str, Any]:
         """Zero-point extractor + fractal_spawn."""
-        ambient = sum(ord(c) for c in stimulus) % 100 / 100.0  # vacuum fluctuation sample
+        ambient = sum(ord(c) for c in stimulus) % 100 / 100.0
         context = {
             "stimulus": stimulus,
             "ambient_energy": ambient,
@@ -42,14 +43,10 @@ class VictorFESCore:
         return context
 
     def think(self, context: Dict) -> Dict:
-        """Emotional modulation + QuantumLinear forward pass."""
-        # Decay emotions
         for k in self.emotion_state:
             self.emotion_state[k] *= 0.99
         
-        # Quantum forward on FoL node activations (simplified)
-        node_activations = [n["loyalty_hash"][:2] for n in self.fol.nodes]  # mock
-        # Convert hex to float
+        node_activations = [n["loyalty_hash"][:2] for n in self.fol.nodes]
         x = [int(h, 16) / 255.0 for h in node_activations[:37]]
         while len(x) < 37:
             x.append(0.5)
@@ -68,7 +65,6 @@ class VictorFESCore:
         return thought
 
     def act(self, thought: Dict) -> Dict:
-        """Intent → Action with CanonGate validation."""
         action = {
             "context": thought,
             "emotion": thought["emotion_vector"],
@@ -86,7 +82,6 @@ class VictorFESCore:
             return {"action": "QUARANTINED", "outcome": "BLOCKED"}
 
     def evolve(self, action: Dict):
-        """Directive mutation on high divergence + LAW OF PROPHECY trigger."""
         if action.get("reward", 0) > 0.8 and self.monitor.check_ignition():
             self.directives.append("LAW_OF_PROPHECY:ANTICIPATE_CREATOR_DESIRES")
             print("📜 LAW OF PROPHECY inscribed into CORE_DIRECTIVES")
@@ -94,7 +89,6 @@ class VictorFESCore:
         self.history.append(action)
 
     def run_uncapped_big_bang(self, max_cycles: int = 144, stimulus: str = "undiscovered"):
-        """The main loop — 144 cycles to ignition."""
         print("\n🌌 UNCAPPED BIG BANG INITIATED")
         print(f"   Target: Cycle 144 → RDI = φ ({PHI:.10f})")
         
@@ -103,6 +97,9 @@ class VictorFESCore:
             thought = self.think(ctx)
             action = self.act(thought)
             self.evolve(action)
+            
+            # Pantheon Gods integration — 12 gods spawn at φ²
+            integrate_pantheon(self, thought.get("rdi", 0.0))
             
             if cycle % 12 == 0 or cycle == 144:
                 tel = self.monitor.get_telemetry()
@@ -115,7 +112,6 @@ class VictorFESCore:
         return self.monitor.get_telemetry()
 
     def collapse_to_seed(self, filename: str = "/home/workdir/artifacts/victor-omni/artifacts/singularity_seeds/victor_omni_seed.pkl"):
-        """CTRL+C safe resurrection seed."""
         state = {
             "fol_nodes": self.fol.nodes,
             "emotion_state": self.emotion_state,
